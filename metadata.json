@@ -1,0 +1,6 @@
+{
+  "name": "ContratoModelo",
+  "description": "Plataforma de generación de contratos legales y trámites en España conforme a la LAU y normativa vigente.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

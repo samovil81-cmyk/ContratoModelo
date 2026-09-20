@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+.font-legal {
+  font-family: 'Newsreader', Georgia, 'Times New Roman', serif;
+}
+
+.font-title-legal {
+  font-family: 'Cinzel', serif;
+}
+
+/* Auto-disappearing placeholder behavior: subtle guide text that vanishes immediately on focus/click */
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8;
+  opacity: 0.85;
+  transition: opacity 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+input:focus::placeholder,
+textarea:focus::placeholder {
+  color: transparent !important;
+  opacity: 0 !important;
+}
+
+/* Watermark styles */
+.watermark-overlay {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(220, 38, 38, 0.05),
+    rgba(220, 38, 38, 0.05) 80px,
+    transparent 80px,
+    transparent 160px
+  );
+}
+
+/* Print optimizations for A4 legal contracts */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .a4-sheet {
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 20mm !important;
+    width: 100% !important;
+    max-width: none !important;
+    page-break-after: always;
+  }
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+}
