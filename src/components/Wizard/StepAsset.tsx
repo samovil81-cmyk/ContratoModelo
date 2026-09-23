@@ -58,7 +58,37 @@ export const StepAsset: React.FC<StepAssetProps> = ({
   const isRoom = contractType === 'alquiler_habitacion';
   const isSeasonal = contractType === 'alquiler_temporada';
   const isHousing = contractType === 'alquiler_vivienda';
-  const isRealEstate = !isVehicle && !isLoan && !isFreelance && !isNDA && !isLabor;
+  const isServitude = contractType.startsWith('servidumbre_');
+  const isRealEstate = !isVehicle && !isLoan && !isFreelance && !isNDA && !isLabor && !isServitude;
+  const servitude = asset.servitudeDetails || {
+    modelSubtype: contractType,
+    dominantPropertyDescription: '',
+    servientPropertyDescription: '',
+    dominantRegistryTitle: '',
+    servientRegistryTitle: '',
+    dominantCadastralRef: '',
+    servientCadastralRef: '',
+    locationAndTechnicalDescription: '',
+    annexPlanReference: '',
+    routeDescription: '',
+    widthMeters: 3,
+    surfaceSquareMeters: 0,
+    allowedUses: '',
+    useSchedule: '',
+    durationDescription: '',
+    compensationAmount: 0,
+    compensationType: 'indemnizacion' as const,
+    expensesAndMaintenance: '',
+    worksAndRestoration: '',
+    liabilityAndInsurance: '',
+    prohibitions: '',
+    dataProtectionClause: '',
+    notaryAndRegistry: '',
+    administrativePermits: '',
+    sectorRegulationWarning: '',
+    forcedConstitutionGrounds: '',
+    existingServitudeBackground: ''
+  };
 
   let isFormValid = true;
   if (isVehicle) {
@@ -77,6 +107,12 @@ export const StepAsset: React.FC<StepAssetProps> = ({
     isFormValid = (asset.claimDetails?.debtTotalAmount ?? 0) > 0 || asset.address.trim().length >= 3;
   } else if (isLabor) {
     isFormValid = asset.monthlyRent > 0 || (asset.laborDetails?.pendingSalary ?? 0) > 0;
+  } else if (isServitude) {
+    isFormValid = servitude.dominantPropertyDescription.trim().length >= 5 &&
+      servitude.servientPropertyDescription.trim().length >= 5 &&
+      servitude.routeDescription.trim().length >= 5 &&
+      servitude.allowedUses.trim().length >= 5 &&
+      servitude.expensesAndMaintenance.trim().length >= 5;
   } else {
     const cadastralValid = !asset.cadastralRef || asset.cadastralRef.trim().length === 20;
     isFormValid = addressValid && rentValid && cpCheck.isValid && cadastralValid;
@@ -88,6 +124,15 @@ export const StepAsset: React.FC<StepAssetProps> = ({
       return;
     }
     onNext();
+  };
+
+  const updateServitude = (data: Partial<NonNullable<AssetData['servitudeDetails']>>) => {
+    onChangeAsset({
+      servitudeDetails: {
+        ...servitude,
+        ...data
+      }
+    });
   };
 
   const handleAddInventory = (e: React.FormEvent) => {
@@ -112,6 +157,185 @@ export const StepAsset: React.FC<StepAssetProps> = ({
       hasInventory: filtered.length > 0
     });
   };
+
+  if (isServitude) {
+    return (
+      <div className="space-y-8">
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+            2. Predios, trazado técnico y régimen de la servidumbre
+          </h2>
+          <p className="text-sm text-slate-600 mt-1">
+            Completa la información clave del predio dominante y sirviente, con especial atención al trazado, indemnización y permisos sectoriales.
+          </p>
+          <div className="mt-4 p-3 rounded-xl border border-amber-200 bg-amber-50 text-xs text-amber-900">
+            <p className="font-semibold">Advertencia jurídica inteligente:</p>
+            <p>
+              Una servidumbre no equivale a un arrendamiento ni a una simple autorización personal. La finca enclavada, la inscripción registral, los planos georreferenciados,
+              los permisos administrativos y la normativa autonómica/local pueden ser determinantes.
+            </p>
+          </div>
+        </div>
+
+        {showErrors && !isFormValid && (
+          <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl flex items-start gap-3 text-rose-800 text-xs sm:text-sm">
+            <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-bold">Faltan datos mínimos para continuar:</p>
+              <p className="mt-1">Rellena descripción de ambos predios, trazado, usos permitidos y régimen de gastos/mantenimiento.</p>
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+            <h3 className="font-bold text-slate-900 text-base">Identificación de predios y títulos</h3>
+            <textarea
+              rows={3}
+              value={servitude.dominantPropertyDescription}
+              onChange={(e) => updateServitude({ dominantPropertyDescription: e.target.value })}
+              placeholder="Predio dominante: ubicación, linderos, finca registral y titularidad..."
+              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+            />
+            <textarea
+              rows={3}
+              value={servitude.servientPropertyDescription}
+              onChange={(e) => updateServitude({ servientPropertyDescription: e.target.value })}
+              placeholder="Predio sirviente: ubicación, linderos, finca registral y titularidad..."
+              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+            />
+            <input
+              type="text"
+              value={servitude.dominantRegistryTitle}
+              onChange={(e) => updateServitude({ dominantRegistryTitle: e.target.value })}
+              placeholder="Título registral/catastral predio dominante"
+              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+            />
+            <input
+              type="text"
+              value={servitude.servientRegistryTitle}
+              onChange={(e) => updateServitude({ servientRegistryTitle: e.target.value })}
+              placeholder="Título registral/catastral predio sirviente"
+              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+            />
+            <input
+              type="text"
+              value={servitude.annexPlanReference}
+              onChange={(e) => updateServitude({ annexPlanReference: e.target.value })}
+              placeholder="Plano/anexo técnico (referencia, visado o enlace interno)"
+              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+            />
+          </div>
+
+          <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+            <h3 className="font-bold text-slate-900 text-base">Trazado, uso, duración e indemnización</h3>
+            <textarea
+              rows={3}
+              value={servitude.routeDescription}
+              onChange={(e) => updateServitude({ routeDescription: e.target.value })}
+              placeholder="Trazado exacto, anchura, superficie afectada y acceso técnico..."
+              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+            />
+            <div className="grid grid-cols-2 gap-3">
+              <input
+                type="number"
+                min={0}
+                step="0.1"
+                value={servitude.widthMeters || ''}
+                onChange={(e) => updateServitude({ widthMeters: parseFloat(e.target.value) || 0 })}
+                placeholder="Anchura (m)"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+              />
+              <input
+                type="number"
+                min={0}
+                step="0.1"
+                value={servitude.surfaceSquareMeters || ''}
+                onChange={(e) => updateServitude({ surfaceSquareMeters: parseFloat(e.target.value) || 0 })}
+                placeholder="Superficie (m²)"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+              />
+            </div>
+            <textarea
+              rows={2}
+              value={servitude.allowedUses}
+              onChange={(e) => updateServitude({ allowedUses: e.target.value })}
+              placeholder="Usos permitidos, horarios y limitaciones de tránsito/instalación..."
+              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+            />
+            <textarea
+              rows={2}
+              value={servitude.durationDescription}
+              onChange={(e) => updateServitude({ durationDescription: e.target.value })}
+              placeholder="Duración (temporal/permanente), causas de revisión o extinción..."
+              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+            />
+            <div className="grid grid-cols-2 gap-3">
+              <select
+                value={servitude.compensationType}
+                onChange={(e) => updateServitude({ compensationType: e.target.value as 'precio' | 'indemnizacion' | 'sin_compensacion' })}
+                className="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+              >
+                <option value="indemnizacion">Indemnización</option>
+                <option value="precio">Precio/pensión</option>
+                <option value="sin_compensacion">Sin contraprestación</option>
+              </select>
+              <input
+                type="number"
+                min={0}
+                step="0.01"
+                value={servitude.compensationAmount || ''}
+                onChange={(e) => updateServitude({ compensationAmount: parseFloat(e.target.value) || 0 })}
+                placeholder="Importe (€)"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+          <h3 className="font-bold text-slate-900 text-base">Gastos, obras, responsabilidad y cumplimiento normativo</h3>
+          <textarea rows={2} value={servitude.expensesAndMaintenance} onChange={(e) => updateServitude({ expensesAndMaintenance: e.target.value })} placeholder="Distribución de gastos, mantenimiento ordinario/extraordinario..." className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs" />
+          <textarea rows={2} value={servitude.worksAndRestoration} onChange={(e) => updateServitude({ worksAndRestoration: e.target.value })} placeholder="Obras permitidas, reposición del terreno/elementos comunes..." className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs" />
+          <textarea rows={2} value={servitude.liabilityAndInsurance} onChange={(e) => updateServitude({ liabilityAndInsurance: e.target.value })} placeholder="Responsabilidad por daños, seguros obligatorios y franquicias..." className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs" />
+          <textarea rows={2} value={servitude.prohibitions} onChange={(e) => updateServitude({ prohibitions: e.target.value })} placeholder="Prohibiciones: cesión no autorizada, ampliación unilateral, usos incompatibles..." className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs" />
+          <textarea rows={2} value={servitude.notaryAndRegistry} onChange={(e) => updateServitude({ notaryAndRegistry: e.target.value })} placeholder="Notaría/registro competente, compromiso de elevación a público e inscripción (LH arts. 2 y 13)..." className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs" />
+          <textarea rows={2} value={servitude.administrativePermits} onChange={(e) => updateServitude({ administrativePermits: e.target.value })} placeholder="Permisos administrativos (aguas, carreteras, costas, urbanismo, energía, telecomunicaciones...)" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs" />
+          <textarea rows={2} value={servitude.sectorRegulationWarning} onChange={(e) => updateServitude({ sectorRegulationWarning: e.target.value })} placeholder="Advertencias sectoriales/autonómicas aplicables..." className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs" />
+
+          {(contractType === 'servidumbre_paso_forzosa_enclavada' || contractType === 'servidumbre_ganado_vias_pecuarias') && (
+            <textarea
+              rows={2}
+              value={servitude.forcedConstitutionGrounds}
+              onChange={(e) => updateServitude({ forcedConstitutionGrounds: e.target.value })}
+              placeholder="Justificación de constitución forzosa: enclave, necesidad, menor perjuicio e indemnización..."
+              className="w-full p-3 bg-amber-50 border border-amber-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+            />
+          )}
+
+          {contractType === 'servidumbre_modificacion_extincion' && (
+            <textarea
+              rows={2}
+              value={servitude.existingServitudeBackground}
+              onChange={(e) => updateServitude({ existingServitudeBackground: e.target.value })}
+              placeholder="Servidumbre preexistente: título, inscripción, modificación/redistribución/renuncia/cancelación..."
+              className="w-full p-3 bg-indigo-50 border border-indigo-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-indigo-500 text-xs"
+            />
+          )}
+        </div>
+
+        <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+          <button type="button" onClick={onPrev} className="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-semibold text-xs hover:bg-slate-50 transition-colors">
+            ← Volver a Partes
+          </button>
+          <button type="button" onClick={handleNext} className="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-bold text-sm shadow-md transition-all flex items-center gap-2">
+            <span>Avanzar a cláusulas y cierre legal</span>
+            <span className="text-xs">→</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

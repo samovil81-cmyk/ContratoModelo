@@ -21,7 +21,16 @@ import {
   Briefcase,
   ShieldAlert,
   Send,
-  MailCheck
+  MailCheck,
+  LandPlot,
+  Route,
+  HardHat,
+  Eye,
+  Waves,
+  Droplets,
+  Fence,
+  Cable,
+  FilePenLine
 } from 'lucide-react';
 import { CONTRACT_CATALOG } from '../utils/legalTemplates';
 import { ContractType, ContractCategory } from '../types/contract';
@@ -55,6 +64,15 @@ export const ContractCatalog: React.FC<ContractCatalogProps> = ({
       case 'ShieldAlert': return <ShieldAlert className="h-6 w-6 text-rose-600" />;
       case 'Send': return <Send className="h-6 w-6 text-red-600" />;
       case 'MailCheck': return <MailCheck className="h-6 w-6 text-orange-600" />;
+      case 'LandPlot': return <LandPlot className="h-6 w-6 text-emerald-700" />;
+      case 'Route': return <Route className="h-6 w-6 text-amber-700" />;
+      case 'HardHat': return <HardHat className="h-6 w-6 text-orange-600" />;
+      case 'Eye': return <Eye className="h-6 w-6 text-cyan-700" />;
+      case 'Waves': return <Waves className="h-6 w-6 text-blue-700" />;
+      case 'Droplets': return <Droplets className="h-6 w-6 text-sky-700" />;
+      case 'Fence': return <Fence className="h-6 w-6 text-lime-700" />;
+      case 'Cable': return <Cable className="h-6 w-6 text-violet-700" />;
+      case 'FilePenLine': return <FilePenLine className="h-6 w-6 text-fuchsia-700" />;
       case 'FileCheck': return <FileCheck className="h-6 w-6 text-emerald-600" />;
       default: return <FileCheck className="h-6 w-6 text-slate-600" />;
     }
@@ -69,6 +87,8 @@ export const ContractCatalog: React.FC<ContractCatalogProps> = ({
     if (filterCategory === 'todos') return matchesSearch;
     return matchesSearch && contract.category === filterCategory;
   });
+  const totalContracts = CONTRACT_CATALOG.length;
+  const byCategoryCount = (category: ContractCategory) => CONTRACT_CATALOG.filter(c => c.category === category).length;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -87,14 +107,14 @@ export const ContractCatalog: React.FC<ContractCatalogProps> = ({
         </h1>
         <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
           Genera al instante documentos oficiales blindados conformes a la 
-          <strong> Ley de Arrendamientos Urbanos (LAU)</strong>, el <strong>Código Civil</strong> y la <strong>Ley 6/2020 de Firma Electrónica</strong>. Previsualización completa y firma remota con certificado.
+          <strong> legislación civil española</strong>, incluyendo <strong>LAU</strong>, <strong>servidumbres del Código Civil</strong> y <strong>Ley 6/2020 de Firma Electrónica</strong>. Previsualización completa y firma remota con certificado.
         </p>
 
         {/* Feature Pills */}
         <div className="mt-6 flex flex-wrap justify-center gap-2 sm:gap-3 text-xs font-medium text-slate-700">
           <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs">
             <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-            <span>Actualizado Ley Vivienda 12/2023 & LAU</span>
+            <span>Modelos de arrendamiento y servidumbres</span>
           </div>
           <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs">
             <FileSignature className="h-4 w-4 text-amber-600" />
@@ -154,7 +174,7 @@ export const ContractCatalog: React.FC<ContractCatalogProps> = ({
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
-              Todos ({CONTRACT_CATALOG.length})
+              Todos ({totalContracts})
             </button>
             <button
               onClick={() => setFilterCategory('inmobiliaria')}
@@ -164,7 +184,7 @@ export const ContractCatalog: React.FC<ContractCatalogProps> = ({
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
-              Inmobiliaria (6)
+              Inmobiliaria ({byCategoryCount('inmobiliaria')})
             </button>
             <button
               onClick={() => setFilterCategory('motor_particulares')}
@@ -174,7 +194,7 @@ export const ContractCatalog: React.FC<ContractCatalogProps> = ({
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
-              Particulares y Motor (3)
+              Particulares y Motor ({byCategoryCount('motor_particulares')})
             </button>
             <button
               onClick={() => setFilterCategory('empresas_freelance')}
@@ -184,7 +204,7 @@ export const ContractCatalog: React.FC<ContractCatalogProps> = ({
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
-              Autónomos y Empresas (3)
+              Autónomos y Empresas ({byCategoryCount('empresas_freelance')})
             </button>
             <button
               onClick={() => setFilterCategory('reclamaciones')}
@@ -194,7 +214,17 @@ export const ContractCatalog: React.FC<ContractCatalogProps> = ({
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
-              Reclamaciones (2)
+              Reclamaciones ({byCategoryCount('reclamaciones')})
+            </button>
+            <button
+              onClick={() => setFilterCategory('servidumbres')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
+                filterCategory === 'servidumbres'
+                  ? 'bg-emerald-700 text-white'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              Servidumbres ({byCategoryCount('servidumbres')})
             </button>
           </div>
 
@@ -289,7 +319,7 @@ export const ContractCatalog: React.FC<ContractCatalogProps> = ({
         <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300">
           <BookCheck className="h-10 w-10 text-slate-600 mx-auto mb-3" />
           <p className="text-sm font-semibold text-slate-700">No se encontraron contratos con esa búsqueda</p>
-          <p className="text-xs text-slate-600 mt-1">Prueba con términos como "vivienda", "arras", "habitación" o "fianza".</p>
+          <p className="text-xs text-slate-600 mt-1">Prueba con términos como "vivienda", "arras", "servidumbre", "paso" o "medianería".</p>
         </div>
       )}
 
@@ -313,7 +343,7 @@ export const ContractCatalog: React.FC<ContractCatalogProps> = ({
             onClick={onOpenLegalInfo}
             className="shrink-0 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold transition-all shadow-sm"
           >
-            Consultar Guía Legal LAU
+            Consultar guía legal
           </button>
         </div>
       </div>

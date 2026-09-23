@@ -9,6 +9,105 @@ interface ContractDocumentA4Props {
 
 export const ContractDocumentA4: React.FC<ContractDocumentA4Props> = ({ contract }) => {
   const { party1, party2, asset, clauses, evidence, contractType, isUnlocked } = contract;
+  const isServitude = contractType.startsWith('servidumbre_');
+  const servitude = asset.servitudeDetails;
+  const servitudeClauses = clauses.servitudeClauses;
+
+  if (isServitude) {
+    const getServitudeTitle = () => {
+      switch (contractType) {
+        case 'servidumbre_paso_voluntaria': return 'CONSTITUCIÓN VOLUNTARIA DE SERVIDUMBRE DE PASO';
+        case 'servidumbre_paso_forzosa_enclavada': return 'SERVIDUMBRE DE PASO FORZOSA POR FINCA ENCLAVADA (MODELO ORIENTATIVO)';
+        case 'servidumbre_paso_temporal_obras': return 'SERVIDUMBRE TEMPORAL DE PASO PARA OBRAS, MATERIALES Y ANDAMIOS';
+        case 'servidumbre_luces_vistas': return 'SERVIDUMBRE DE LUCES Y VISTAS';
+        case 'servidumbre_desague_vertiente': return 'SERVIDUMBRE DE DESAGÜE Y/O VERTIENTE DE AGUAS';
+        case 'servidumbre_acueducto_riego': return 'SERVIDUMBRE DE ACUEDUCTO Y CONDUCCIÓN DE AGUA PARA RIEGO';
+        case 'servidumbre_ganado_vias_pecuarias': return 'SERVIDUMBRE DE ABREVADERO, GANADO Y TRÁNSITO PECUARIO';
+        case 'servidumbre_medianeria': return 'PACTO DE MEDIANERÍA Y ELEMENTO COMÚN';
+        case 'servidumbre_energia_telecom': return 'SERVIDUMBRE DE ENERGÍA, CANALIZACIONES Y TELECOMUNICACIONES';
+        case 'servidumbre_modificacion_extincion': return 'RECONOCIMIENTO, MODIFICACIÓN Y EXTINCIÓN/CANCELACIÓN DE SERVIDUMBRE';
+        default: return 'PACTO DE SERVIDUMBRE';
+      }
+    };
+
+    return (
+      <div id="contract-a4-document" className="relative mx-auto bg-white rounded-none sm:rounded-xl shadow-2xl border border-slate-300 print:border-none print:shadow-none max-w-4xl font-legal text-slate-900 leading-relaxed overflow-hidden">
+        {!isUnlocked && (
+          <div className="absolute inset-0 pointer-events-none z-30 flex items-center justify-center select-none overflow-hidden watermark-overlay">
+            <div className="rotate-[-32deg] text-center border-4 border-dashed border-rose-600/30 p-8 rounded-3xl bg-white/40 backdrop-blur-[1px] shadow-lg">
+              <p className="text-3xl sm:text-5xl font-extrabold tracking-widest text-rose-600/50 uppercase font-sans">BORRADOR NO VINCULANTE</p>
+            </div>
+          </div>
+        )}
+        <div className="p-8 sm:p-14 lg:p-16 text-justify text-sm sm:text-[15px] space-y-6">
+          <div className="text-center pb-6 border-b-2 border-slate-900 space-y-2">
+            <h1 className="text-xl sm:text-2xl font-bold font-title-legal tracking-wide uppercase text-slate-900">{getServitudeTitle()}</h1>
+            <p className="text-xs sm:text-sm italic text-slate-700 max-w-2xl mx-auto">
+              Modelo orientativo basado en Código Civil (arts. 530-604) y Ley Hipotecaria (arts. 2 y 13), sujeto a revisión profesional y normativa sectorial aplicable.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-base font-bold tracking-wider uppercase border-b border-slate-300 pb-1 text-slate-800">PARTES Y REPRESENTACIÓN</h2>
+            <p><strong>Predio dominante / beneficiario:</strong> {party1.name || '________________'} ({party1.docType} {party1.docNumber || '________'}), domicilio en {party1.address || '________________'}.</p>
+            <p><strong>Predio sirviente / gravado:</strong> {party2.name || '________________'} ({party2.docType} {party2.docNumber || '________'}), domicilio en {party2.address || '________________'}.</p>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-base font-bold tracking-wider uppercase border-b border-slate-300 pb-1 text-slate-800">PREDIOS, TÍTULOS Y DESCRIPCIÓN TÉCNICA</h2>
+            <p><strong>Predio dominante:</strong> {servitude?.dominantPropertyDescription || 'Sin detallar'}.</p>
+            <p><strong>Predio sirviente:</strong> {servitude?.servientPropertyDescription || 'Sin detallar'}.</p>
+            <p><strong>Títulos registrales/catastrales:</strong> {servitude?.dominantRegistryTitle || 'N/D'} / {servitude?.servientRegistryTitle || 'N/D'}.</p>
+            <p><strong>Plano o anexo:</strong> {servitude?.annexPlanReference || 'Pendiente de adjuntar'}.</p>
+            <p><strong>Trazado y dimensiones:</strong> {servitude?.routeDescription || 'Sin detallar'}; anchura {servitude?.widthMeters || 0} m; superficie {servitude?.surfaceSquareMeters || 0} m².</p>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-base font-bold tracking-wider uppercase border-b border-slate-300 pb-1 text-slate-800">RÉGIMEN DE USO, DURACIÓN Y CONTRAPRESTACIÓN</h2>
+            <p><strong>Uso y horarios:</strong> {servitude?.allowedUses || 'Sin detallar'} {servitude?.useSchedule ? `(${servitude.useSchedule})` : ''}.</p>
+            <p><strong>Duración:</strong> {servitude?.durationDescription || 'Según pacto entre partes y normativa aplicable'}.</p>
+            <p><strong>Indemnización/contraprestación:</strong> {servitude?.compensationType || 'indemnizacion'} {servitude?.compensationAmount ? `por importe de ${formatCurrencyEUR(servitude.compensationAmount)}` : '(importe pendiente de concretar)'}.</p>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-base font-bold tracking-wider uppercase border-b border-slate-300 pb-1 text-slate-800">GASTOS, OBRAS, RESPONSABILIDAD Y EXTINCIÓN</h2>
+            <p><strong>Gastos y mantenimiento:</strong> {servitude?.expensesAndMaintenance || 'Sin detallar'}.</p>
+            <p><strong>Obras y reposición:</strong> {servitude?.worksAndRestoration || 'Sin detallar'}.</p>
+            <p><strong>Responsabilidad y seguros:</strong> {servitude?.liabilityAndInsurance || 'Sin detallar'}.</p>
+            <p><strong>Prohibiciones:</strong> {servitude?.prohibitions || 'Sin detallar'}.</p>
+            <p><strong>Modificación/extinción:</strong> {servitudeClauses?.extinctionAndModificationRules || 'Se aplicarán las causas legales y pactadas, incluyendo renuncia, no uso, consolidación, imposibilidad o mutuo acuerdo.'}</p>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-base font-bold tracking-wider uppercase border-b border-slate-300 pb-1 text-slate-800">CUMPLIMIENTO, INSCRIPCIÓN Y ADVERTENCIAS</h2>
+            <p><strong>Notaría/Registro:</strong> {servitude?.notaryAndRegistry || 'Pendiente de designación'}.</p>
+            <p><strong>Permisos administrativos:</strong> {servitude?.administrativePermits || 'Las partes revisarán permisos sectoriales y autonómicos/locales aplicables.'}</p>
+            <p><strong>Aviso sectorial:</strong> {servitude?.sectorRegulationWarning || servitudeClauses?.sectorialRegulationNotice || 'En aguas, vías pecuarias, costas, carreteras, urbanismo, energía o telecomunicaciones puede requerirse autorización específica.'}</p>
+            {(contractType === 'servidumbre_paso_forzosa_enclavada' || contractType === 'servidumbre_ganado_vias_pecuarias') && (
+              <p><strong>Fundamento de constitución forzosa:</strong> {servitude?.forcedConstitutionGrounds || 'Debe acreditarse necesidad, menor perjuicio e indemnización correspondiente.'}</p>
+            )}
+            {contractType === 'servidumbre_modificacion_extincion' && (
+              <p><strong>Antecedentes de servidumbre existente:</strong> {servitude?.existingServitudeBackground || 'No especificado'}.</p>
+            )}
+            <p className="text-rose-800"><strong>No asesoramiento jurídico:</strong> este documento es orientativo y no garantiza validez automática ni sustituye revisión profesional.</p>
+          </div>
+
+          <div className="pt-6 border-t border-slate-300 grid grid-cols-2 gap-8">
+            <div>
+              <p className="font-semibold">Firma predio dominante</p>
+              <p className="text-xs mt-10 border-t border-slate-400 pt-2">{party1.name || '_______________________'}</p>
+            </div>
+            <div>
+              <p className="font-semibold">Firma predio sirviente</p>
+              <p className="text-xs mt-10 border-t border-slate-400 pt-2">{party2.name || '_______________________'}</p>
+            </div>
+          </div>
+
+          <DigitalEvidenceSeal evidence={evidence} party1={party1} party2={party2} contractTitle={getServitudeTitle()} />
+        </div>
+      </div>
+    );
+  }
 
   // Dynamic titles depending on contract type
   const getDocTitle = () => {

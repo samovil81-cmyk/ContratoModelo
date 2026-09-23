@@ -16,9 +16,20 @@ export type ContractType =
   // Reclamaciones
   | 'reclamacion_impago'
   | 'resolucion_anticipada'
-  | 'finiquito_laboral';
+  | 'finiquito_laboral'
+  // Servidumbres
+  | 'servidumbre_paso_voluntaria'
+  | 'servidumbre_paso_forzosa_enclavada'
+  | 'servidumbre_paso_temporal_obras'
+  | 'servidumbre_luces_vistas'
+  | 'servidumbre_desague_vertiente'
+  | 'servidumbre_acueducto_riego'
+  | 'servidumbre_ganado_vias_pecuarias'
+  | 'servidumbre_medianeria'
+  | 'servidumbre_energia_telecom'
+  | 'servidumbre_modificacion_extincion';
 
-export type ContractCategory = 'inmobiliaria' | 'motor_particulares' | 'empresas_freelance' | 'reclamaciones';
+export type ContractCategory = 'inmobiliaria' | 'motor_particulares' | 'empresas_freelance' | 'reclamaciones' | 'servidumbres';
 
 export interface ContractMeta {
   id: ContractType;
@@ -183,6 +194,37 @@ export interface AssetData {
     severancePay: number;
   };
 
+  // Specific to servitudes
+  servitudeDetails?: {
+    modelSubtype: string;
+    dominantPropertyDescription: string;
+    servientPropertyDescription: string;
+    dominantRegistryTitle: string;
+    servientRegistryTitle: string;
+    dominantCadastralRef: string;
+    servientCadastralRef: string;
+    locationAndTechnicalDescription: string;
+    annexPlanReference: string;
+    routeDescription: string;
+    widthMeters: number;
+    surfaceSquareMeters: number;
+    allowedUses: string;
+    useSchedule: string;
+    durationDescription: string;
+    compensationAmount: number;
+    compensationType: 'precio' | 'indemnizacion' | 'sin_compensacion';
+    expensesAndMaintenance: string;
+    worksAndRestoration: string;
+    liabilityAndInsurance: string;
+    prohibitions: string;
+    dataProtectionClause: string;
+    notaryAndRegistry: string;
+    administrativePermits: string;
+    sectorRegulationWarning: string;
+    forcedConstitutionGrounds: string;
+    existingServitudeBackground: string;
+  };
+
   // Financial terms
   monthlyRent: number;
   legalDepositMonths: number; // 1 for housing, 2 for other uses (LAU art. 36)
@@ -210,6 +252,13 @@ export interface ClauseTerms {
     gas: boolean;
     internet: boolean;
     communityFees: boolean;
+  };
+  servitudeClauses?: {
+    registrationCommitment: boolean;
+    georeferencedPlanAttached: boolean;
+    acknowledgesNoAutomaticValidity: boolean;
+    extinctionAndModificationRules: string;
+    sectorialRegulationNotice: string;
   };
   specialClauses: string;
   jurisdictionCity: string;
