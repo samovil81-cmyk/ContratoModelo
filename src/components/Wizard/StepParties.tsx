@@ -21,6 +21,7 @@ export const StepParties: React.FC<StepPartiesProps> = ({
   onNext
 }) => {
   const [showErrors, setShowErrors] = useState(false);
+  const isServitude = contractType.startsWith('servidumbre_');
 
   // Validation checks
   const p1DocCheck = validateDoc(party1.docNumber, party1.docType);
@@ -92,6 +93,8 @@ export const StepParties: React.FC<StepPartiesProps> = ({
     ? 'Parte Notificante'
     : contractType === 'entrega_llaves'
     ? 'Parte Arrendadora (Recibe llaves)'
+    : isServitude
+    ? 'Titular del Predio Dominante / Beneficiario'
     : 'Parte Arrendadora (Propietario)';
 
   const party2Label = contractType === 'arras_compraventa' 
@@ -112,6 +115,8 @@ export const StepParties: React.FC<StepPartiesProps> = ({
     ? 'Parte Notificada'
     : contractType === 'entrega_llaves'
     ? 'Parte Arrendataria (Devuelve llaves)'
+    : isServitude
+    ? 'Titular del Predio Sirviente / Gravado'
     : 'Parte Arrendataria (Inquilino)';
 
   return (
@@ -124,7 +129,9 @@ export const StepParties: React.FC<StepPartiesProps> = ({
             Identificación fehaciente de las partes contratantes
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 mt-1">
-            Conforme a la normativa española, los intervinientes deben consignar nombre completo, DNI/NIE válido con letra de control y domicilio a efectos de notificaciones fehacientes (art. 4 LAU y Código Civil).
+            {isServitude
+              ? 'En servidumbres deben quedar claramente identificados titulares y representación de predio dominante y sirviente, con domicilio hábil para notificaciones y acreditación documental.'
+              : 'Conforme a la normativa española, los intervinientes deben consignar nombre completo, DNI/NIE válido con letra de control y domicilio a efectos de notificaciones fehacientes (art. 4 LAU y Código Civil).'}
           </p>
         </div>
 

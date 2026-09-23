@@ -1,6 +1,9 @@
 import { ContractMeta, ContractState, ContractType } from '../types/contract';
 import { generateCSV } from './cryptoUtils';
 
+export const isServitudeContractType = (type: ContractType): boolean =>
+  type.startsWith('servidumbre_');
+
 export const CONTRACT_CATALOG: ContractMeta[] = [
   // 1. INMOBILIARIA
   {
@@ -190,6 +193,138 @@ export const CONTRACT_CATALOG: ContractMeta[] = [
     estimatedTime: '3 min',
     iconName: 'FileCheck',
     tags: ['Estatuto Trabajadores', 'Finiquito', 'Liquidación']
+  },
+
+  // 5. SERVIDUMBRES (CÓDIGO CIVIL Y LEGISLACIÓN SECTORIAL)
+  {
+    id: 'servidumbre_paso_voluntaria',
+    title: 'Constitución voluntaria de servidumbre de paso',
+    badge: 'CC arts. 530-604',
+    popular: true,
+    category: 'servidumbres',
+    legalBasis: 'Código Civil, Título VII (arts. 530-604), con especial atención a arts. 564-570 y 594-604',
+    shortDesc: 'Constitución por acuerdo entre predio dominante y sirviente con trazado, anchura, uso, gastos e inscripción.',
+    detailedDesc: 'Incluye identificación de predios, plano/anexo técnico, contraprestación o indemnización, obras y reposición, mantenimiento, responsabilidad y extinción.',
+    estimatedTime: '5 min',
+    iconName: 'LandPlot',
+    tags: ['Predio dominante/sirviente', 'Paso pactado', 'Inscripción registral']
+  },
+  {
+    id: 'servidumbre_paso_forzosa_enclavada',
+    title: 'Servidumbre de paso forzosa (finca enclavada)',
+    badge: 'CC arts. 564-570',
+    popular: true,
+    category: 'servidumbres',
+    legalBasis: 'Código Civil arts. 564-570',
+    shortDesc: 'Modelo orientativo para paso necesario por enclave, con justificación de necesidad e indemnización.',
+    detailedDesc: 'Recoge fundamentos de necesidad, menor perjuicio al predio sirviente, anchura mínima necesaria y previsión de indemnización y gastos.',
+    estimatedTime: '6 min',
+    iconName: 'Route',
+    tags: ['Finca enclavada', 'Paso necesario', 'Indemnización']
+  },
+  {
+    id: 'servidumbre_paso_temporal_obras',
+    title: 'Servidumbre temporal para obras, materiales y andamios',
+    badge: 'CC art. 569',
+    popular: false,
+    category: 'servidumbres',
+    legalBasis: 'Código Civil (paso temporal y obras necesarias) y normativa urbanística aplicable',
+    shortDesc: 'Paso temporal para ejecución de obras con calendario, seguridad, responsabilidad y reposición.',
+    detailedDesc: 'Delimita duración, franja horaria, señalización, prevención de daños y obligación de restitución del predio afectado.',
+    estimatedTime: '4 min',
+    iconName: 'HardHat',
+    tags: ['Temporal', 'Obras', 'Reposición']
+  },
+  {
+    id: 'servidumbre_luces_vistas',
+    title: 'Servidumbre de luces y vistas',
+    badge: 'CC arts. 580-585',
+    popular: false,
+    category: 'servidumbres',
+    legalBasis: 'Código Civil arts. 580-585',
+    shortDesc: 'Pacta huecos, distancias, limitaciones y medidas de privacidad entre colindantes.',
+    detailedDesc: 'Incluye descripción técnica de huecos/elementos, linderos, distancias, límites de obra y medidas de protección de intimidad.',
+    estimatedTime: '4 min',
+    iconName: 'Eye',
+    tags: ['Luces', 'Vistas', 'Distancias']
+  },
+  {
+    id: 'servidumbre_desague_vertiente',
+    title: 'Servidumbre de desagüe/vertiente de aguas',
+    badge: 'CC arts. 586-588',
+    popular: false,
+    category: 'servidumbres',
+    legalBasis: 'Código Civil arts. 586-588 y normativa especial de aguas cuando proceda',
+    shortDesc: 'Conducción y vertiente de aguas entre predios, con advertencias de normativa sectorial.',
+    detailedDesc: 'Define trazado, medidas técnicas, mantenimiento y advertencias sobre autorizaciones de la administración hidráulica.',
+    estimatedTime: '5 min',
+    iconName: 'Waves',
+    tags: ['Aguas', 'Desagüe', 'Normativa sectorial']
+  },
+  {
+    id: 'servidumbre_acueducto_riego',
+    title: 'Servidumbre de acueducto y conducción para riego',
+    badge: 'CC + aguas',
+    popular: false,
+    category: 'servidumbres',
+    legalBasis: 'Código Civil y normativa sectorial de aguas y regadíos',
+    shortDesc: 'Modelo de conducción de agua con trazado, caudal orientativo, permisos y mantenimiento.',
+    detailedDesc: 'Incluye advertencias de autorización administrativa, compatibilidad con dominio público hidráulico y normativa autonómica.',
+    estimatedTime: '5 min',
+    iconName: 'Droplets',
+    tags: ['Acueducto', 'Riego', 'Permisos']
+  },
+  {
+    id: 'servidumbre_ganado_vias_pecuarias',
+    title: 'Abrevadero, ganado y vías pecuarias',
+    badge: 'CC arts. 564-570',
+    popular: false,
+    category: 'servidumbres',
+    legalBasis: 'Código Civil (paso y ganado) y normativa de vías pecuarias/autonómica',
+    shortDesc: 'Diferencia servidumbres existentes y constitución forzosa cuando proceda.',
+    detailedDesc: 'Establece uso ganadero, periodos de tránsito, capacidad, obligaciones de cierre/señalización y régimen de responsabilidad.',
+    estimatedTime: '5 min',
+    iconName: 'Fence',
+    tags: ['Ganado', 'Cañada/cordel/vereda', 'Existente o forzosa']
+  },
+  {
+    id: 'servidumbre_medianeria',
+    title: 'Servidumbre de medianería',
+    badge: 'CC arts. 571-579',
+    popular: false,
+    category: 'servidumbres',
+    legalBasis: 'Código Civil arts. 571-579',
+    shortDesc: 'Modelo para muro/elemento medianero común y reparto de cargas.',
+    detailedDesc: 'Regula conservación, elevación, obras compatibles, reparto de gastos y resolución de conflictos sobre elementos comunes.',
+    estimatedTime: '4 min',
+    iconName: 'Building2',
+    tags: ['Medianería', 'Muro común', 'Gastos']
+  },
+  {
+    id: 'servidumbre_energia_telecom',
+    title: 'Energía, canalizaciones y telecomunicaciones',
+    badge: 'Convencional + permisos',
+    popular: false,
+    category: 'servidumbres',
+    legalBasis: 'Código Civil y normativa sectorial de energía, telecomunicaciones, carreteras y urbanismo',
+    shortDesc: 'Modelo convencional sujeto a permisos administrativos y seguridad técnica.',
+    detailedDesc: 'Previsión de acceso técnico, trazado de canalizaciones, mantenimiento, seguros y coordinación con normas sectoriales.',
+    estimatedTime: '5 min',
+    iconName: 'Cable',
+    tags: ['Canalizaciones', 'Telecom', 'Permisos']
+  },
+  {
+    id: 'servidumbre_modificacion_extincion',
+    title: 'Reconocimiento, modificación y extinción de servidumbre',
+    badge: 'CC arts. 530-604',
+    popular: false,
+    category: 'servidumbres',
+    legalBasis: 'Código Civil y Ley Hipotecaria (arts. 2 y 13) para oponibilidad registral',
+    shortDesc: 'Reconocimiento, redistribución, renuncia/cancelación y actualización del contenido de servidumbre.',
+    detailedDesc: 'Permite documentar cambios, extinción o cancelación con referencias a escritura, registro y anexos técnicos.',
+    estimatedTime: '4 min',
+    iconName: 'FilePenLine',
+    tags: ['Modificación', 'Renuncia', 'Cancelación']
   }
 ];
 
@@ -210,6 +345,17 @@ export function createInitialContractState(type: ContractType = 'alquiler_vivien
       case 'alquiler_local': return 'Arrendador (Propietario Local)';
       case 'alquiler_garaje': return 'Arrendador (Propietario Garaje)';
       case 'finiquito_laboral': return 'Empresa / Empleador';
+      case 'servidumbre_modificacion_extincion': return 'Titular del Predio Dominante / Solicitante';
+      case 'servidumbre_paso_voluntaria':
+      case 'servidumbre_paso_forzosa_enclavada':
+      case 'servidumbre_paso_temporal_obras':
+      case 'servidumbre_luces_vistas':
+      case 'servidumbre_desague_vertiente':
+      case 'servidumbre_acueducto_riego':
+      case 'servidumbre_ganado_vias_pecuarias':
+      case 'servidumbre_medianeria':
+      case 'servidumbre_energia_telecom':
+        return 'Titular del Predio Dominante / Beneficiario';
       default: return 'Arrendador (Propietario)';
     }
   };
@@ -227,6 +373,17 @@ export function createInitialContractState(type: ContractType = 'alquiler_vivien
       case 'alquiler_local': return 'Arrendatario (Negocio / Empresa)';
       case 'alquiler_garaje': return 'Arrendatario (Usuario Plaza)';
       case 'finiquito_laboral': return 'Trabajador/a';
+      case 'servidumbre_modificacion_extincion': return 'Titular del Predio Sirviente / Afectado';
+      case 'servidumbre_paso_voluntaria':
+      case 'servidumbre_paso_forzosa_enclavada':
+      case 'servidumbre_paso_temporal_obras':
+      case 'servidumbre_luces_vistas':
+      case 'servidumbre_desague_vertiente':
+      case 'servidumbre_acueducto_riego':
+      case 'servidumbre_ganado_vias_pecuarias':
+      case 'servidumbre_medianeria':
+      case 'servidumbre_energia_telecom':
+        return 'Titular del Predio Sirviente / Gravado';
       default: return 'Arrendatario (Inquilino)';
     }
   };
@@ -237,6 +394,7 @@ export function createInitialContractState(type: ContractType = 'alquiler_vivien
     if (t === 'alquiler_garaje') return 'Garaje / Trastero' as const;
     if (t === 'compraventa_vehiculo') return 'Vehículo' as const;
     if (t === 'servicios_freelance' || t === 'acuerdo_nda' || t === 'prestamo_familiares') return 'Servicio / Mercantil' as const;
+    if (isServitudeContractType(t)) return 'Casa / Chalet' as const;
     return 'Piso' as const;
   };
 
@@ -363,6 +521,35 @@ export function createInitialContractState(type: ContractType = 'alquiler_vivien
         vacationDaysPending: 0,
         severancePay: 0
       },
+      servitudeDetails: {
+        modelSubtype: type,
+        dominantPropertyDescription: '',
+        servientPropertyDescription: '',
+        dominantRegistryTitle: '',
+        servientRegistryTitle: '',
+        dominantCadastralRef: '',
+        servientCadastralRef: '',
+        locationAndTechnicalDescription: '',
+        annexPlanReference: '',
+        routeDescription: '',
+        widthMeters: 3,
+        surfaceSquareMeters: 0,
+        allowedUses: '',
+        useSchedule: '',
+        durationDescription: isServitudeContractType(type) ? 'Indefinida salvo pacto expreso de extinción' : '',
+        compensationAmount: 0,
+        compensationType: 'indemnizacion',
+        expensesAndMaintenance: '',
+        worksAndRestoration: '',
+        liabilityAndInsurance: '',
+        prohibitions: '',
+        dataProtectionClause: 'Tratamiento de datos limitado a la finalidad documental y cumplimiento legal (RGPD y LOPDGDD).',
+        notaryAndRegistry: '',
+        administrativePermits: '',
+        sectorRegulationWarning: '',
+        forcedConstitutionGrounds: '',
+        existingServitudeBackground: ''
+      },
       monthlyRent: 0,
       legalDepositMonths: type === 'alquiler_local' || type === 'alquiler_temporada' ? 2 : 1,
       additionalGuaranteeMonths: 0,
@@ -387,12 +574,19 @@ export function createInitialContractState(type: ContractType = 'alquiler_vivien
         internet: type === 'alquiler_habitacion',
         communityFees: true
       },
+      servitudeClauses: {
+        registrationCommitment: isServitudeContractType(type),
+        georeferencedPlanAttached: isServitudeContractType(type),
+        acknowledgesNoAutomaticValidity: isServitudeContractType(type),
+        extinctionAndModificationRules: '',
+        sectorialRegulationNotice: ''
+      },
       specialClauses: '',
       jurisdictionCity: ''
     },
     evidence: {
       id: 'EVD-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
-      verificationCode: generateCSV('ES-LAU'),
+      verificationCode: generateCSV(isServitudeContractType(type) ? 'ES-SRV' : 'ES-LAU'),
       documentHash: 'c798e4f1bc20a325d7e6c1a8904e5f32b109dcba891234efcba8761234901234',
       timestampFormatted: new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' }),
       ipMock: '194.179.1.84 (Madrid, España)',
@@ -402,4 +596,3 @@ export function createInitialContractState(type: ContractType = 'alquiler_vivien
     }
   };
 }
-

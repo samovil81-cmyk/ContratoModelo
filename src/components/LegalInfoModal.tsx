@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, ShieldCheck, BookOpen, AlertCircle, Building2, CheckCircle2 } from 'lucide-react';
+import { X, ShieldCheck, BookOpen, AlertCircle, Building2, CheckCircle2, Scale } from 'lucide-react';
 
 interface LegalInfoModalProps {
   isOpen: boolean;
@@ -31,7 +31,7 @@ export const LegalInfoModal: React.FC<LegalInfoModalProps> = ({ isOpen, onClose 
             Garantías Legales y Cumplimiento Normativo
           </h3>
           <p className="text-xs text-slate-300 mt-1">
-            Revisado periódicamente por especialistas en Derecho Inmobiliario y Contratación Civil.
+            Guía orientativa actualizable. Requiere revisión profesional para cada caso concreto.
           </p>
         </div>
 
@@ -77,12 +77,37 @@ export const LegalInfoModal: React.FC<LegalInfoModalProps> = ({ isOpen, onClose 
           {/* Section 4: Firma digital y eIDAS */}
           <div className="space-y-2">
             <h4 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <Scale className="w-4 h-4 text-emerald-700" />
+              <span>4. Servidumbres: referencias clave (orientativas)</span>
+            </h4>
+            <p className="leading-relaxed">
+              Para modelos de servidumbre, el marco general parte del <strong>Código Civil, Título VII (arts. 530-604)</strong>, con atención a
+              paso y ganado (564-570), medianería (571-579), luces y vistas (580-585), aguas (586-588) y servidumbres voluntarias (594-604).
+            </p>
+            <p className="leading-relaxed">
+              La oponibilidad frente a terceros suele requerir escritura e inscripción conforme a la <strong>Ley Hipotecaria (arts. 2 y 13)</strong>.
+              Además, pueden resultar aplicables normas sectoriales (aguas, vías pecuarias, costas, carreteras, urbanismo, energía, telecomunicaciones y normativa autonómica/local).
+            </p>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
+              <p><strong>Enlaces oficiales BOE (consulta consolidada):</strong></p>
+              <p>• Código Civil: https://www.boe.es/buscar/act.php?id=BOE-A-1889-4763</p>
+              <p>• Ley Hipotecaria: https://www.boe.es/buscar/act.php?id=BOE-A-1946-2453</p>
+            </div>
+          </div>
+
+          {/* Section 5: Firma digital y eIDAS */}
+          <div className="space-y-2">
+            <h4 className="font-bold text-slate-900 text-sm flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-blue-600" />
-              <span>4. Validez de la firma electrónica (Reglamento eIDAS y Ley 6/2020)</span>
+              <span>5. Validez de la firma electrónica (Reglamento eIDAS y Ley 6/2020)</span>
             </h4>
             <p className="leading-relaxed">
               El artículo 23 de la LSSI y el Reglamento (UE) Nº 910/2014 otorgan plena eficacia jurídica a los contratos celebrados por vía electrónica. El código seguro de verificación (CSV), el sellado de tiempo UTC/CET y la huella criptográfica SHA-256 aseguran que el documento no ha sido alterado tras la firma.
             </p>
+          </div>
+
+          <div className="p-3 bg-rose-50 rounded-xl border border-rose-200 text-rose-900 text-xs">
+            <strong>Aviso legal:</strong> Esta aplicación ofrece modelos orientativos y no presta asesoramiento jurídico. No se garantiza cobertura íntegra de derechos forales, autonómicos o supuestos sectoriales sin revisión profesional.
           </div>
 
         </div>

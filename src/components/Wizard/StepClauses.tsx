@@ -29,6 +29,119 @@ export const StepClauses: React.FC<StepClausesProps> = ({
 }) => {
   const isHousing = contractType === 'alquiler_vivienda';
   const isSeasonal = contractType === 'alquiler_temporada';
+  const isServitude = contractType.startsWith('servidumbre_');
+  const servitudeClauses = clauses.servitudeClauses || {
+    registrationCommitment: true,
+    georeferencedPlanAttached: true,
+    acknowledgesNoAutomaticValidity: true,
+    extinctionAndModificationRules: '',
+    sectorialRegulationNotice: ''
+  };
+
+  if (isServitude) {
+    return (
+      <div className="space-y-8">
+        <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200">
+          <h2 className="text-xl font-bold text-slate-900">
+            3. Régimen jurídico final, advertencias y extinción
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-600 mt-1">
+            Este modelo es orientativo y no sustituye escritura pública, autorizaciones administrativas ni inscripción registral cuando resulten exigibles.
+          </p>
+        </div>
+
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+          <label className="flex items-center gap-2 text-xs font-semibold text-slate-800">
+            <input
+              type="checkbox"
+              checked={servitudeClauses.registrationCommitment}
+              onChange={(e) => onChangeClauses({ servitudeClauses: { ...servitudeClauses, registrationCommitment: e.target.checked } })}
+              className="rounded text-amber-600 focus:ring-amber-500"
+            />
+            Compromiso de elevación a público e inscripción (Ley Hipotecaria arts. 2 y 13)
+          </label>
+          <label className="flex items-center gap-2 text-xs font-semibold text-slate-800">
+            <input
+              type="checkbox"
+              checked={servitudeClauses.georeferencedPlanAttached}
+              onChange={(e) => onChangeClauses({ servitudeClauses: { ...servitudeClauses, georeferencedPlanAttached: e.target.checked } })}
+              className="rounded text-amber-600 focus:ring-amber-500"
+            />
+            Se incorpora plano georreferenciado/anexo técnico cuando proceda
+          </label>
+          <label className="flex items-center gap-2 text-xs font-semibold text-slate-800">
+            <input
+              type="checkbox"
+              checked={servitudeClauses.acknowledgesNoAutomaticValidity}
+              onChange={(e) => onChangeClauses({ servitudeClauses: { ...servitudeClauses, acknowledgesNoAutomaticValidity: e.target.checked } })}
+              className="rounded text-amber-600 focus:ring-amber-500"
+            />
+            Reconocimiento de que el documento no constituye asesoramiento jurídico ni garantiza validez automática
+          </label>
+
+          <textarea
+            rows={3}
+            value={servitudeClauses.extinctionAndModificationRules}
+            onChange={(e) => onChangeClauses({ servitudeClauses: { ...servitudeClauses, extinctionAndModificationRules: e.target.value } })}
+            placeholder="Causas de modificación/extinción (cumplimiento plazo, renuncia, confusión, no uso, imposibilidad, mutuo acuerdo, resolución judicial...)"
+            className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+          />
+          <textarea
+            rows={3}
+            value={servitudeClauses.sectorialRegulationNotice}
+            onChange={(e) => onChangeClauses({ servitudeClauses: { ...servitudeClauses, sectorialRegulationNotice: e.target.value } })}
+            placeholder="Advertencia de normativa sectorial y autonómica/local aplicable (aguas, vías pecuarias, costas, carreteras, urbanismo, energía, telecom...)"
+            className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+          />
+        </div>
+
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-900">
+          <p className="font-bold mb-1">Recordatorio esencial:</p>
+          <p>
+            En supuestos de finca enclavada, aprovechamientos de agua, trazados sobre dominio público o infraestructuras reguladas, la autorización administrativa y la normativa sectorial pueden prevalecer sobre este documento privado.
+          </p>
+        </div>
+
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+          <label className="block text-xs font-semibold text-slate-700">
+            Cláusulas especiales adicionales
+          </label>
+          <textarea
+            rows={3}
+            value={clauses.specialClauses}
+            onChange={(e) => onChangeClauses({ specialClauses: e.target.value })}
+            placeholder="Pactos específicos de acceso, notificaciones, mediación, seguros o garantías adicionales..."
+            className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+          />
+          <input
+            type="text"
+            value={clauses.jurisdictionCity}
+            onChange={(e) => onChangeClauses({ jurisdictionCity: e.target.value })}
+            placeholder="Partido judicial / ciudad de jurisdicción"
+            className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-xs"
+          />
+        </div>
+
+        <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+          <button
+            type="button"
+            onClick={onPrev}
+            className="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-semibold text-xs hover:bg-slate-50 transition-colors"
+          >
+            ← Volver a datos técnicos
+          </button>
+          <button
+            type="button"
+            onClick={onNext}
+            className="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-bold text-sm shadow-md transition-all flex items-center gap-2"
+          >
+            <span>Avanzar a firma digital y documento final</span>
+            <span className="text-xs">→</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

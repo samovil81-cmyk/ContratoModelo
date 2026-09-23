@@ -98,7 +98,7 @@ export const Header: React.FC<HeaderProps> = ({
               title="Marco legal español y garantías"
             >
               <BookOpen className="h-3.5 w-3.5 text-slate-700" />
-              <span className="hidden md:inline">Garantías LAU</span>
+              <span className="hidden md:inline">Marco legal</span>
             </button>
 
             <button

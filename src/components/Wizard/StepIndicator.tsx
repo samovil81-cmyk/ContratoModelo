@@ -26,14 +26,14 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
       num: 2,
       title: 'Inmueble y condiciones',
       shortTitle: 'Activo & Renta',
-      subtitle: 'Dirección, fianza y muebles',
+      subtitle: 'Datos técnicos y económicos',
       icon: Home
     },
     {
       num: 3,
       title: 'Cláusulas y plazos',
       shortTitle: 'Cláusulas',
-      subtitle: 'Duración, IPC y prórrogas',
+      subtitle: 'Régimen legal y extinción',
       icon: FileText
     },
     {
