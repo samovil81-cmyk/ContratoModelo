@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ClauseTerms, ContractType } from '../../types/contract';
 import { 
   Calendar, 
@@ -29,6 +29,16 @@ export const StepClauses: React.FC<StepClausesProps> = ({
 }) => {
   const isHousing = contractType === 'alquiler_vivienda';
   const isSeasonal = contractType === 'alquiler_temporada';
+  const isServitude = contractType.startsWith('servidumbre_');
+  const [showErrors, setShowErrors] = useState(false);
+  const servitudeTerms = clauses.servitudeTerms;
+  const handleNext = () => {
+    if (isServitude && (!servitudeTerms?.legalNoticeAccepted || !servitudeTerms.duration.trim() || !servitudeTerms.liabilityAndInsurance.trim())) {
+      setShowErrors(true);
+      return;
+    }
+    onNext();
+  };
 
   return (
     <div className="space-y-8">
@@ -42,6 +52,28 @@ export const StepClauses: React.FC<StepClausesProps> = ({
           Configura los pactos contractuales conforme a la Ley de Arrendamientos Urbanos (arts. 9, 10, 11 y 18 LAU) garantizando la máxima validez jurídica ante cualquier tribunal.
         </p>
       </div>
+
+      {isServitude && (
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-cyan-200 shadow-xs space-y-5">
+          <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div><h3 className="font-bold text-slate-900">Condiciones propias de la servidumbre</h3><p className="text-xs text-slate-600">Pactos económicos, conservación, responsabilidad y publicidad registral.</p></div>
+            <Scale className="w-5 h-5 text-cyan-700" />
+          </div>
+          {showErrors && <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800">Indica duración, responsabilidad/seguros y acepta el aviso legal antes de continuar.</div>}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div><label className="block text-xs font-semibold text-slate-700 mb-1">Duración y causa *</label><input value={servitudeTerms?.duration || ''} onChange={(e) => onChangeClauses({ servitudeTerms: { ...servitudeTerms!, duration: e.target.value } })} placeholder="Indefinida / temporal hasta el día..." className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs" /></div>
+            <div><label className="block text-xs font-semibold text-slate-700 mb-1">Indemnización o canon (€)</label><input type="number" min={0} value={servitudeTerms?.compensationEUR || ''} onChange={(e) => onChangeClauses({ servitudeTerms: { ...servitudeTerms!, compensationEUR: parseFloat(e.target.value) || 0 } })} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs" /></div>
+            <textarea rows={3} value={servitudeTerms?.worksCostAllocation || ''} onChange={(e) => onChangeClauses({ servitudeTerms: { ...servitudeTerms!, worksCostAllocation: e.target.value } })} placeholder="Reparto de obras, materiales, permisos y restauración..." className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+            <textarea rows={3} value={servitudeTerms?.maintenanceAllocation || ''} onChange={(e) => onChangeClauses({ servitudeTerms: { ...servitudeTerms!, maintenanceAllocation: e.target.value } })} placeholder="Mantenimiento ordinario, acceso de inspección y reparaciones..." className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+            <textarea rows={3} value={servitudeTerms?.liabilityAndInsurance || ''} onChange={(e) => onChangeClauses({ servitudeTerms: { ...servitudeTerms!, liabilityAndInsurance: e.target.value } })} placeholder="Responsabilidad por daños, seguro de responsabilidad civil y cobertura de obra *" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+            <textarea rows={3} value={servitudeTerms?.prohibitions || ''} onChange={(e) => onChangeClauses({ servitudeTerms: { ...servitudeTerms!, prohibitions: e.target.value } })} placeholder="Prohibiciones: ampliar trazado, cambiar uso, obstaculizar, ceder..." className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+          </div>
+          <div className="space-y-3">
+            <label className="flex items-start gap-2 text-xs text-slate-700"><input type="checkbox" checked={servitudeTerms?.registrationAgreement || false} onChange={(e) => onChangeClauses({ servitudeTerms: { ...servitudeTerms!, registrationAgreement: e.target.checked } })} className="mt-0.5 rounded text-cyan-600" /><span>Las partes se comprometen a elevar el acuerdo a público y solicitar su inscripción, aportando plano y título suficiente cuando proceda.</span></label>
+            <label className={`flex items-start gap-2 p-3 rounded-xl border text-xs ${showErrors && !servitudeTerms?.legalNoticeAccepted ? 'border-rose-300 bg-rose-50' : 'border-amber-200 bg-amber-50'}`}><input type="checkbox" checked={servitudeTerms?.legalNoticeAccepted || false} onChange={(e) => onChangeClauses({ servitudeTerms: { ...servitudeTerms!, legalNoticeAccepted: e.target.checked } })} className="mt-0.5 rounded text-amber-600" /><span><strong>Aviso legal:</strong> este es un modelo orientativo. Requiere revisión notarial, registral y técnica antes de firmar; en servidumbres sectoriales también deben verificarse permisos, proyecto y normativa autonómica o municipal.</span></label>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
@@ -335,7 +367,7 @@ export const StepClauses: React.FC<StepClausesProps> = ({
 
         <button
           type="button"
-          onClick={onNext}
+          onClick={handleNext}
           className="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-bold text-sm shadow-md transition-all flex items-center gap-2"
         >
           <span>Avanzar a Firma Digital y Documento Final</span>

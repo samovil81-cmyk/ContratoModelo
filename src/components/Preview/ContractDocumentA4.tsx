@@ -41,6 +41,14 @@ export const ContractDocumentA4: React.FC<ContractDocumentA4Props> = ({ contract
         return 'CONTRATO DE ARRENDAMIENTO DE TEMPORADA POR MOTIVO ESPECÍFICO';
       case 'finiquito_laboral':
         return 'PROPUESTA DE LIQUIDACIÓN DE HABERES Y SALDO DE FINIQUITO';
+      case 'servidumbre_paso_voluntario': return 'ESCRITURA PRIVADA DE CONSTITUCIÓN DE SERVIDUMBRE DE PASO VOLUNTARIA';
+      case 'servidumbre_paso_forzoso': return 'ACUERDO SOBRE SERVIDUMBRE FORZOSA DE PASO POR FINCA ENCLAVADA';
+      case 'servidumbre_paso_obras': return 'ACUERDO DE PASO TEMPORAL PARA OBRAS';
+      case 'servidumbre_luces_vistas': return 'ACUERDO DE SERVIDUMBRE DE LUCES Y VISTAS';
+      case 'servidumbre_desague_aguas': return 'ACUERDO DE SERVIDUMBRE DE DESAGÜE Y AGUAS';
+      case 'servidumbre_acueducto_riego': return 'ACUERDO DE SERVIDUMBRE DE ACUEDUCTO Y RIEGO';
+      case 'servidumbre_medianeria': return 'ACUERDO DE MEDIANERÍA Y USO DE ELEMENTO COMÚN';
+      case 'servidumbre_instalaciones_sectoriales': return 'ACUERDO DE SERVIDUMBRE PARA INSTALACIONES SECTORIALES';
       default:
         return 'CONTRATO LEGAL VINCULANTE';
     }
@@ -76,6 +84,14 @@ export const ContractDocumentA4: React.FC<ContractDocumentA4Props> = ({ contract
         return 'Sujeto al artículo 3.2 de la Ley 29/1994 de Arrendamientos Urbanos (Uso distinto del de vivienda habitual)';
       case 'finiquito_laboral':
         return 'En cumplimiento del artículo 49.2 del Estatuto de los Trabajadores (Real Decreto Legislativo 2/2015)';
+      case 'servidumbre_paso_voluntario': return 'Régimen general de servidumbres del Código Civil, arts. 530 a 604';
+      case 'servidumbre_paso_forzoso': return 'Código Civil, arts. 564 a 570: necesidad de salida a camino público e indemnización';
+      case 'servidumbre_paso_obras': return 'Código Civil, arts. 569 y 570: paso temporal para construir o reparar';
+      case 'servidumbre_luces_vistas': return 'Código Civil, arts. 580 a 585: huecos, ventanas y distancias';
+      case 'servidumbre_desague_aguas': return 'Código Civil, arts. 552 a 588; sin perjuicio de la normativa hidráulica';
+      case 'servidumbre_acueducto_riego': return 'Código Civil, arts. 557 a 563; concesiones y autorizaciones hidráulicas cuando procedan';
+      case 'servidumbre_medianeria': return 'Código Civil, arts. 571 a 579: medianería, reparación y elevación';
+      case 'servidumbre_instalaciones_sectoriales': return 'Ley 24/2013 del Sector Eléctrico y Ley 11/2022 General de Telecomunicaciones';
       default:
         return 'Documento redactado conforme al ordenamiento jurídico español vigente';
     }
@@ -175,7 +191,15 @@ export const ContractDocumentA4: React.FC<ContractDocumentA4Props> = ({ contract
             EXPONEN
           </h2>
           
-          {contractType === 'arras_compraventa' ? (
+          {contractType.startsWith('servidumbre_') ? (
+            <>
+              <div><h3 className="font-bold text-slate-900">PRIMERA.- CONSTITUCIÓN Y ALCANCE.</h3><p className="mt-1">La parte titular del predio sirviente constituye a favor del predio dominante el derecho descrito en este documento, limitado al trazado, anchura, uso y horarios indicados, sin ampliación unilateral ni perjuicio innecesario.</p></div>
+              <div><h3 className="font-bold text-slate-900">SEGUNDA.- DURACIÓN E INDEMNIZACIÓN.</h3><p className="mt-1">La duración pactada es <strong>{clauses.servitudeTerms?.duration || 'la que determine el título definitivo'}</strong>. La indemnización o canon asciende a <strong>{formatCurrencyEUR(clauses.servitudeTerms?.compensationEUR || 0)}</strong>, sin perjuicio de la indemnización legal que corresponda en un supuesto forzoso.</p></div>
+              <div><h3 className="font-bold text-slate-900">TERCERA.- OBRAS, CONSERVACIÓN Y RESPONSABILIDAD.</h3><p className="mt-1">{clauses.servitudeTerms?.worksCostAllocation || 'Las obras y gastos necesarios se repartirán conforme al beneficio obtenido y a la ley.'} {clauses.servitudeTerms?.maintenanceAllocation || 'La conservación se realizará evitando daños y molestias al predio sirviente.'} Responsabilidad y seguros: {clauses.servitudeTerms?.liabilityAndInsurance || 'la parte que use o ejecute las obras responderá de los daños causados y mantendrá cobertura suficiente.'}</p></div>
+              <div><h3 className="font-bold text-slate-900">CUARTA.- LIMITACIONES Y PUBLICIDAD.</h3><p className="mt-1">Quedan prohibidos los usos no descritos, la alteración del trazado y cualquier actuación que agrave la servidumbre. {clauses.servitudeTerms?.prohibitions || ''} Las partes manifiestan su voluntad de elevar a público e inscribir el derecho cuando proceda: <strong>{clauses.servitudeTerms?.registrationAgreement ? 'sí' : 'pendiente de revisión'}</strong>.</p></div>
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded text-xs"><strong>AVISO LEGAL:</strong> modelo orientativo sujeto a revisión notarial, registral y técnica. En instalaciones de energía, telecomunicaciones o canalizaciones no sustituye proyecto, permisos, declaración de utilidad pública, expediente de ocupación ni normativa sectorial aplicable.</div>
+            </>
+          ) : contractType === 'arras_compraventa' ? (
             <>
               <p>
                 <strong>I.-</strong> Que la <strong>{p1RoleLabel}</strong> es legítima propietaria y titular en pleno dominio del siguiente inmueble o activo:
@@ -205,6 +229,12 @@ export const ContractDocumentA4: React.FC<ContractDocumentA4Props> = ({ contract
               <p>
                 <strong>III.-</strong> Que al amparo del artículo 49.2 del Estatuto de los Trabajadores, la empresa procede a practicar la preceptiva propuesta de liquidación de haberes devengados, partes proporcionales y saldo de finiquito.
               </p>
+            </>
+          ) : contractType.startsWith('servidumbre_') ? (
+            <>
+              <p><strong>I.-</strong> Que las partes identifican como <strong>predio dominante</strong> a {asset.servitudeDetails?.dominantOwner || '________________'} y como <strong>predio sirviente</strong> a {asset.servitudeDetails?.servientOwner || '________________'}, con las referencias registrales y catastrales que constan en el formulario.</p>
+              <div className="pl-6 border-l-2 border-cyan-700 py-2 space-y-1 text-xs sm:text-sm bg-cyan-50/60 p-3 rounded"><p><strong>Predio dominante:</strong> {asset.servitudeDetails?.dominantAddress || '________________'} · finca/CRU {asset.servitudeDetails?.dominantRegistryRef || '________'} · Catastro {asset.servitudeDetails?.dominantCadastralRef || '____________________'}.</p><p><strong>Predio sirviente:</strong> {asset.servitudeDetails?.servientAddress || '________________'} · finca/CRU {asset.servitudeDetails?.servientRegistryRef || '________'} · Catastro {asset.servitudeDetails?.servientCadastralRef || '____________________'}.</p><p><strong>Trazado:</strong> {asset.servitudeDetails?.routeDescription || '________________'}.</p><p><strong>Anchura/superficie:</strong> {asset.servitudeDetails?.widthMeters || '___'} m / {asset.servitudeDetails?.surfaceM2 || '___'} m2.</p></div>
+              <p><strong>II.-</strong> Que el derecho se configura con el alcance, duración, indemnización, reparto de obras, mantenimiento y responsabilidades establecidos en las cláusulas siguientes, sin perjuicio de permisos administrativos, proyecto técnico y elevación a público cuando sean exigibles.</p>
             </>
           ) : (
             <>

@@ -18,6 +18,7 @@ import {
   Calendar,
   Layers,
   Scale
+  ,Route
 } from 'lucide-react';
 
 interface StepAssetProps {
@@ -58,10 +59,15 @@ export const StepAsset: React.FC<StepAssetProps> = ({
   const isRoom = contractType === 'alquiler_habitacion';
   const isSeasonal = contractType === 'alquiler_temporada';
   const isHousing = contractType === 'alquiler_vivienda';
+  const isServitude = contractType.startsWith('servidumbre_');
+  const isSectorialServitude = contractType === 'servidumbre_instalaciones_sectoriales';
   const isRealEstate = !isVehicle && !isLoan && !isFreelance && !isNDA && !isLabor;
 
   let isFormValid = true;
-  if (isVehicle) {
+  if (isServitude) {
+    const details = asset.servitudeDetails;
+    isFormValid = Boolean(details?.dominantOwner.trim() && details?.servientOwner.trim() && details?.dominantRegistryRef.trim() && details?.servientRegistryRef.trim() && details?.routeDescription.trim() && details.widthMeters > 0 && details?.dominantCadastralRef.trim().length === 20 && details?.servientCadastralRef.trim().length === 20);
+  } else if (isVehicle) {
     const brandOk = (asset.vehicleDetails?.brandModel?.trim().length ?? 0) >= 2;
     const plateOk = (asset.vehicleDetails?.plate?.trim().length ?? 0) >= 4;
     const priceOk = asset.monthlyRent > 0;
@@ -157,7 +163,37 @@ export const StepAsset: React.FC<StepAssetProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         {/* SECTION 1: OBJETO O ASSET */}
-        {isVehicle ? (
+        {isServitude ? (
+          <div className="lg:col-span-2 bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs space-y-5">
+            <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
+              <div className="w-9 h-9 rounded-xl bg-cyan-100 text-cyan-800 flex items-center justify-center"><Route className="w-4 h-4" /></div>
+              <div><h3 className="font-bold text-slate-900">Delimitación de las fincas y del derecho</h3><p className="text-xs text-slate-600">La descripción debe poder trasladarse a escritura, plano y Registro.</p></div>
+            </div>
+            {showErrors && !isFormValid && <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800">Completa titulares, referencias registrales y catastrales de ambas fincas, trazado y anchura.</div>}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="space-y-3 p-4 bg-cyan-50/60 border border-cyan-100 rounded-xl">
+                <h4 className="text-xs font-bold uppercase tracking-wide text-cyan-950">Predio dominante</h4>
+                <input value={asset.servitudeDetails?.dominantOwner || ''} onChange={(e) => onChangeAsset({ servitudeDetails: { ...asset.servitudeDetails!, dominantOwner: e.target.value } })} placeholder="Titular/es del predio dominante *" className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs" />
+                <input value={asset.servitudeDetails?.dominantAddress || ''} onChange={(e) => onChangeAsset({ servitudeDetails: { ...asset.servitudeDetails!, dominantAddress: e.target.value } })} placeholder="Dirección y municipio" className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs" />
+                <input value={asset.servitudeDetails?.dominantRegistryRef || ''} onChange={(e) => onChangeAsset({ servitudeDetails: { ...asset.servitudeDetails!, dominantRegistryRef: e.target.value } })} placeholder="Finca registral / CRU *" className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-mono" />
+                <input maxLength={20} value={asset.servitudeDetails?.dominantCadastralRef || ''} onChange={(e) => onChangeAsset({ servitudeDetails: { ...asset.servitudeDetails!, dominantCadastralRef: e.target.value.toUpperCase().replace(/\s/g, '') } })} placeholder="Referencia catastral (20) *" className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-mono" />
+              </div>
+              <div className="space-y-3 p-4 bg-amber-50/60 border border-amber-100 rounded-xl">
+                <h4 className="text-xs font-bold uppercase tracking-wide text-amber-950">Predio sirviente</h4>
+                <input value={asset.servitudeDetails?.servientOwner || ''} onChange={(e) => onChangeAsset({ servitudeDetails: { ...asset.servitudeDetails!, servientOwner: e.target.value } })} placeholder="Titular/es del predio sirviente *" className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs" />
+                <input value={asset.servitudeDetails?.servientAddress || ''} onChange={(e) => onChangeAsset({ servitudeDetails: { ...asset.servitudeDetails!, servientAddress: e.target.value } })} placeholder="Dirección y municipio" className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs" />
+                <input value={asset.servitudeDetails?.servientRegistryRef || ''} onChange={(e) => onChangeAsset({ servitudeDetails: { ...asset.servitudeDetails!, servientRegistryRef: e.target.value } })} placeholder="Finca registral / CRU *" className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-mono" />
+                <input maxLength={20} value={asset.servitudeDetails?.servientCadastralRef || ''} onChange={(e) => onChangeAsset({ servitudeDetails: { ...asset.servitudeDetails!, servientCadastralRef: e.target.value.toUpperCase().replace(/\s/g, '') } })} placeholder="Referencia catastral (20) *" className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-mono" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="md:col-span-2"><label className="block text-xs font-semibold text-slate-700 mb-1">Trazado, puntos de inicio y final, hitos y plano de referencia *</label><textarea rows={4} value={asset.servitudeDetails?.routeDescription || ''} onChange={(e) => onChangeAsset({ servitudeDetails: { ...asset.servitudeDetails!, routeDescription: e.target.value } })} placeholder="Ej. Desde el lindero norte de la finca sirviente hasta el camino municipal, conforme al plano anexo..." className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs" /></div>
+              <div className="space-y-3"><div><label className="block text-xs font-semibold text-slate-700 mb-1">Anchura (m) *</label><input type="number" min={0.1} step="0.1" value={asset.servitudeDetails?.widthMeters || ''} onChange={(e) => onChangeAsset({ servitudeDetails: { ...asset.servitudeDetails!, widthMeters: parseFloat(e.target.value) || 0 } })} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs" /></div><div><label className="block text-xs font-semibold text-slate-700 mb-1">Superficie afectada (m2)</label><input type="number" min={0} step="0.1" value={asset.servitudeDetails?.surfaceM2 || ''} onChange={(e) => onChangeAsset({ servitudeDetails: { ...asset.servitudeDetails!, surfaceM2: parseFloat(e.target.value) || 0 } })} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs" /></div></div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3"><textarea rows={2} value={asset.servitudeDetails?.useAndSchedule || ''} onChange={(e) => onChangeAsset({ servitudeDetails: { ...asset.servitudeDetails!, useAndSchedule: e.target.value } })} placeholder="Uso autorizado, vehículos, personas, horarios, frecuencia y duración..." className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs" /><textarea rows={2} value={asset.servitudeDetails?.technicalProject || ''} onChange={(e) => onChangeAsset({ servitudeDetails: { ...asset.servitudeDetails!, technicalProject: e.target.value } })} placeholder="Proyecto técnico, memoria, plano o coordenadas (si aplica)..." className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs" /></div>
+            <div className="p-3 bg-slate-900 text-slate-200 rounded-xl text-[11px] leading-relaxed"><strong className="text-cyan-300">{isSectorialServitude ? 'Supuesto sectorial:' : 'Supuesto civil:'}</strong> {isSectorialServitude ? 'este modelo no sustituye declaración de utilidad pública, expediente de ocupación, autorizaciones energéticas o de telecomunicaciones, proyecto técnico ni normativa autonómica y municipal.' : 'la constitución voluntaria debe elevarse a público y presentarse al Registro si se quiere oponer con seguridad frente a terceros.'}</div>
+          </div>
+        ) : isVehicle ? (
           /* MOTOR: COMPRAVENTA DE VEHÍCULO */
           <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
             <div className="flex items-center gap-2 pb-3 border-b border-slate-100">

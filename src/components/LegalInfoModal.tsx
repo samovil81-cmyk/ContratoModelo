@@ -49,6 +49,19 @@ export const LegalInfoModal: React.FC<LegalInfoModalProps> = ({ isOpen, onClose 
             </p>
           </div>
 
+          <div className="space-y-3 pt-2 border-t border-slate-200">
+            <h4 className="font-bold text-slate-900 text-sm flex items-center gap-2"><BookOpen className="w-4 h-4 text-cyan-700" />Servidumbres: fuentes verificables</h4>
+            <p className="leading-relaxed">Los modelos de servidumbre civil parten del régimen general de los artículos 530 a 604 del Código Civil: concepto y clases, constitución, paso por finca enclavada, aguas, luces y vistas, medianería y extinción.</p>
+            <ul className="space-y-1.5 text-[11px]">
+              <li><a className="text-cyan-800 underline" href="https://www.boe.es/eli/es/rd/1889/07/24/(1)/con" target="_blank" rel="noreferrer">Código Civil consolidado en BOE</a> (arts. 530-604).</li>
+              <li><a className="text-cyan-800 underline" href="https://www.boe.es/eli/es/l/2013/12/26/24/con" target="_blank" rel="noreferrer">Ley 24/2013, del Sector Eléctrico</a>: utilidad pública, ocupación y servidumbres de instalaciones eléctricas, según el proyecto y procedimiento aplicable.</li>
+              <li><a className="text-cyan-800 underline" href="https://www.boe.es/eli/es/l/2022/06/28/11/con" target="_blank" rel="noreferrer">Ley 11/2022, General de Telecomunicaciones</a>: arts. 44-55 y disposición adicional segunda sobre ocupación, servidumbres, canalizaciones, obra civil y redes en edificios.</li>
+              <li><a className="text-cyan-800 underline" href="https://www.boe.es/eli/es/rdlg/2001/07/20/1/con" target="_blank" rel="noreferrer">Texto Refundido de la Ley de Aguas</a>: autorizaciones, concesiones y dominio público hidráulico cuando el acueducto o desagüe no sea puramente privado.</li>
+              <li><a className="text-cyan-800 underline" href="https://www.boe.es/eli/es/l/1946/12/08/(1)/con" target="_blank" rel="noreferrer">Ley Hipotecaria</a>: publicidad registral y necesidad de título adecuado para oponibilidad frente a terceros.</li>
+            </ul>
+            <p className="text-[11px] text-slate-600">La aplicación no sustituye el análisis de la finca, título constitutivo, planeamiento, normativa autonómica, proyecto técnico, autorizaciones administrativas ni el asesoramiento notarial, registral o de un técnico competente.</p>
+          </div>
+
           {/* Section 2: Fianza y límites */}
           <div className="space-y-2">
             <h4 className="font-bold text-slate-900 text-sm flex items-center gap-2">

@@ -37,20 +37,20 @@ export const Header: React.FC<HeaderProps> = ({
               onNavigate('catalog');
             }}
           >
-            <div className="h-10 w-10 rounded-xl bg-slate-900 text-amber-400 flex items-center justify-center shadow-md border border-slate-700">
-              <Scale className="h-5 w-5" />
+            <div className="h-10 w-10 rounded-xl bg-[#132a2f] text-[#f5c56b] flex items-center justify-center shadow-md border border-[#2a5556]">
+              <Scale className="h-5 w-5" strokeWidth={2.4} />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-xl font-bold tracking-tight text-slate-900">
-                  Contrato<span className="text-amber-600">Modelo</span>
+                  Nexo<span className="text-[#c46a3d]">Legal</span>
                 </span>
                 <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                   <ShieldCheck className="h-3 w-3 mr-1" /> Legal Tech ES
                 </span>
               </div>
-              <p className="text-xs text-slate-700 hidden sm:block">
-                Ecosistema Jurídico Integral • Inteligencia & Firma Digital
+                <p className="text-xs text-slate-700 hidden sm:block">
+                Contratos de propiedad, servidumbres y firma digital
               </p>
             </div>
           </div>

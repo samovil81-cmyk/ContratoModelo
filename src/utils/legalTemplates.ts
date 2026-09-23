@@ -190,6 +190,105 @@ export const CONTRACT_CATALOG: ContractMeta[] = [
     estimatedTime: '3 min',
     iconName: 'FileCheck',
     tags: ['Estatuto Trabajadores', 'Finiquito', 'Liquidación']
+  },
+
+  // 5. SERVIDUMBRES CIVILES
+  {
+    id: 'servidumbre_paso_voluntario',
+    title: 'Servidumbre de Paso Voluntaria',
+    badge: 'Código Civil arts. 530-604',
+    popular: true,
+    category: 'servidumbres_civiles',
+    legalBasis: 'Código Civil, arts. 530, 531, 564, 565, 594 y 595; inscripción conforme a la legislación hipotecaria',
+    shortDesc: 'Pacto voluntario para constituir un paso permanente entre finca dominante y finca sirviente.',
+    detailedDesc: 'Captura el trazado, anchura, uso, indemnización, conservación y consentimiento para elevar a público e inscribir el derecho real.',
+    estimatedTime: '5 min',
+    iconName: 'Route',
+    tags: ['Finca dominante', 'Finca sirviente', 'Trazado', 'Inscripción registral']
+  },
+  {
+    id: 'servidumbre_paso_forzoso',
+    title: 'Servidumbre Forzosa de Paso',
+    badge: 'Código Civil arts. 564-570',
+    category: 'servidumbres_civiles',
+    legalBasis: 'Código Civil, arts. 564 a 570: finca enclavada, necesidad, menor perjuicio e indemnización',
+    shortDesc: 'Modelo orientativo para documentar una solicitud o acuerdo por finca sin salida suficiente a camino público.',
+    detailedDesc: 'Exige justificar el enclavamiento, el punto de salida menos perjudicial, la indemnización y la eventual intervención judicial.',
+    estimatedTime: '6 min',
+    iconName: 'Route',
+    tags: ['Finca enclavada', 'Indemnización', 'Menor perjuicio', 'Vía judicial']
+  },
+  {
+    id: 'servidumbre_paso_obras',
+    title: 'Paso Temporal para Obras',
+    badge: 'Código Civil arts. 569-570',
+    category: 'servidumbres_civiles',
+    legalBasis: 'Código Civil, arts. 569 y 570; responsabilidad por daños y restitución',
+    shortDesc: 'Acceso temporal de personas, maquinaria y materiales para construir o reparar una finca.',
+    detailedDesc: 'Fija calendario, horarios, zonas de acopio, seguros, reposición del terreno y fianza de garantía.',
+    estimatedTime: '4 min',
+    iconName: 'Construction',
+    tags: ['Obras', 'Temporal', 'Maquinaria', 'Reposición']
+  },
+  {
+    id: 'servidumbre_luces_vistas',
+    title: 'Servidumbre de Luces y Vistas',
+    badge: 'Código Civil arts. 580-585',
+    category: 'servidumbres_civiles',
+    legalBasis: 'Código Civil, arts. 580 a 585: huecos, ventanas, distancias y vistas',
+    shortDesc: 'Ordena la apertura o mantenimiento de huecos, ventanas y vistas respetando distancias legales.',
+    detailedDesc: 'Debe incorporar medidas, orientación, tipo de hueco, elementos de protección y límites frente a la intimidad y la medianería.',
+    estimatedTime: '4 min',
+    iconName: 'Eye',
+    tags: ['Ventanas', 'Distancias', 'Intimidad', 'Medianería']
+  },
+  {
+    id: 'servidumbre_desague_aguas',
+    title: 'Desagüe y Aguas',
+    badge: 'Código Civil arts. 552-588',
+    category: 'servidumbres_civiles',
+    legalBasis: 'Código Civil, arts. 552, 556, 557 y 588; sin perjuicio de la Ley de Aguas',
+    shortDesc: 'Canaliza aguas pluviales o de desagüe con reglas de caudal, mantenimiento y daños.',
+    detailedDesc: 'Distingue aguas naturales, pluviales y residuales, y recuerda que cualquier dominio público hidráulico exige autorización sectorial.',
+    estimatedTime: '5 min',
+    iconName: 'Droplets',
+    tags: ['Aguas', 'Desagüe', 'Mantenimiento', 'Autorización hidráulica']
+  },
+  {
+    id: 'servidumbre_acueducto_riego',
+    title: 'Acueducto y Riego',
+    badge: 'Código Civil arts. 557-563',
+    category: 'servidumbres_civiles',
+    legalBasis: 'Código Civil, arts. 557 a 563 y Texto Refundido de la Ley de Aguas cuando proceda',
+    shortDesc: 'Define el paso de conducciones de agua para riego, abastecimiento privado o aprovechamiento autorizado.',
+    detailedDesc: 'Incluye sección de tubería, caudal, acceso de mantenimiento, reparto de obras y comprobación de concesiones o autorizaciones.',
+    estimatedTime: '5 min',
+    iconName: 'Waves',
+    tags: ['Acueducto', 'Riego', 'Caudal', 'Concesión']
+  },
+  {
+    id: 'servidumbre_medianeria',
+    title: 'Medianería y Uso de Elemento Común',
+    badge: 'Código Civil arts. 571-579',
+    category: 'servidumbres_civiles',
+    legalBasis: 'Código Civil, arts. 571 a 579: presunciones, cargas, reparación y elevación de pared medianera',
+    shortDesc: 'Acuerdo entre colindantes sobre muro, gastos de reparación, elevación y uso compartido.',
+    detailedDesc: 'Documenta titularidad, estado de la pared, proporciones de gasto, obra proyectada y no perjuicio para el vecino.',
+    estimatedTime: '5 min',
+    iconName: 'Wall',
+    tags: ['Medianera', 'Colindantes', 'Reparación', 'Gastos']
+  },
+  {
+    id: 'servidumbre_instalaciones_sectoriales',
+    title: 'Energía, Telecomunicaciones y Canalizaciones',
+    badge: 'Sectorial: Ley 24/2013 / Ley 11/2022',
+    category: 'servidumbres_sectoriales',
+    legalBasis: 'Ley 24/2013 del Sector Eléctrico; Ley 11/2022 General de Telecomunicaciones, arts. 44-55 y DA 2ª; normativa técnica y autorizaciones aplicables',
+    shortDesc: 'Acuerdo técnico para líneas, fibra, conducciones, centros de transformación o canalizaciones.',
+    detailedDesc: 'Separa el pacto privado de los procedimientos de utilidad pública, ocupación, expropiación, permisos, proyecto técnico y puesta en servicio.',
+    estimatedTime: '7 min',
+    iconName: 'Cable',
+    tags: ['Energía', 'Fibra', 'Canalización', 'Proyecto técnico', 'Sectorial']
   }
 ];
 
@@ -210,7 +309,9 @@ export function createInitialContractState(type: ContractType = 'alquiler_vivien
       case 'alquiler_local': return 'Arrendador (Propietario Local)';
       case 'alquiler_garaje': return 'Arrendador (Propietario Garaje)';
       case 'finiquito_laboral': return 'Empresa / Empleador';
-      default: return 'Arrendador (Propietario)';
+      case 'servidumbre_instalaciones_sectoriales': return 'Titular de la instalación / Beneficiario';
+      case 'servidumbre_paso_forzoso': return 'Titular del predio dominante / Solicitante';
+      default: return 'Titular del predio dominante / Constituyente';
     }
   };
 
@@ -227,7 +328,9 @@ export function createInitialContractState(type: ContractType = 'alquiler_vivien
       case 'alquiler_local': return 'Arrendatario (Negocio / Empresa)';
       case 'alquiler_garaje': return 'Arrendatario (Usuario Plaza)';
       case 'finiquito_laboral': return 'Trabajador/a';
-      default: return 'Arrendatario (Inquilino)';
+      case 'servidumbre_instalaciones_sectoriales': return 'Titular del predio sirviente / Afectado';
+      case 'servidumbre_paso_forzoso': return 'Titular del predio sirviente';
+      default: return 'Titular del predio sirviente / Constituyente';
     }
   };
 
@@ -236,7 +339,7 @@ export function createInitialContractState(type: ContractType = 'alquiler_vivien
     if (t === 'alquiler_local') return 'Local / Oficina' as const;
     if (t === 'alquiler_garaje') return 'Garaje / Trastero' as const;
     if (t === 'compraventa_vehiculo') return 'Vehículo' as const;
-    if (t === 'servicios_freelance' || t === 'acuerdo_nda' || t === 'prestamo_familiares') return 'Servicio / Mercantil' as const;
+    if (t === 'servicios_freelance' || t === 'acuerdo_nda' || t === 'prestamo_familiares' || t.startsWith('servidumbre_')) return 'Servicio / Mercantil' as const;
     return 'Piso' as const;
   };
 
@@ -371,6 +474,13 @@ export function createInitialContractState(type: ContractType = 'alquiler_vivien
       bankIban: '',
       hasInventory: false,
       inventoryList: []
+      ,servitudeDetails: {
+        dominantOwner: '', dominantRegistryRef: '', dominantCadastralRef: '', dominantAddress: '',
+        servientOwner: '', servientRegistryRef: '', servientCadastralRef: '', servientAddress: '',
+        routeDescription: '', widthMeters: 0, surfaceM2: 0, useAndSchedule: '',
+        infrastructureType: type === 'servidumbre_instalaciones_sectoriales' ? 'energia' : 'civil',
+        technicalProject: '', publicPermits: ''
+      }
     },
     clauses: {
       startDate: todayIso,
@@ -389,6 +499,16 @@ export function createInitialContractState(type: ContractType = 'alquiler_vivien
       },
       specialClauses: '',
       jurisdictionCity: ''
+      ,servitudeTerms: {
+        duration: type === 'servidumbre_paso_obras' ? 'Temporal hasta finalizar las obras' : 'Indefinida, mientras subsista la necesidad',
+        compensationEUR: 0,
+        worksCostAllocation: '',
+        maintenanceAllocation: '',
+        liabilityAndInsurance: '',
+        prohibitions: '',
+        registrationAgreement: false,
+        legalNoticeAccepted: false
+      }
     },
     evidence: {
       id: 'EVD-' + Math.random().toString(36).substring(2, 8).toUpperCase(),

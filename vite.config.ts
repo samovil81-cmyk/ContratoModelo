@@ -5,7 +5,11 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
+<<<<<<< HEAD
     base: '/',
+=======
+        base: '/',
+>>>>>>> 3d27e03 (Incorporacion de catalogo completo de servidumbres y firmas)
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {

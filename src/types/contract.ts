@@ -16,9 +16,18 @@ export type ContractType =
   // Reclamaciones
   | 'reclamacion_impago'
   | 'resolucion_anticipada'
-  | 'finiquito_laboral';
+  | 'finiquito_laboral'
+  // Servidumbres civiles y sectoriales
+  | 'servidumbre_paso_voluntario'
+  | 'servidumbre_paso_forzoso'
+  | 'servidumbre_paso_obras'
+  | 'servidumbre_luces_vistas'
+  | 'servidumbre_desague_aguas'
+  | 'servidumbre_acueducto_riego'
+  | 'servidumbre_medianeria'
+  | 'servidumbre_instalaciones_sectoriales';
 
-export type ContractCategory = 'inmobiliaria' | 'motor_particulares' | 'empresas_freelance' | 'reclamaciones';
+export type ContractCategory = 'inmobiliaria' | 'motor_particulares' | 'empresas_freelance' | 'reclamaciones' | 'servidumbres_civiles' | 'servidumbres_sectoriales';
 
 export interface ContractMeta {
   id: ContractType;
@@ -194,6 +203,25 @@ export interface AssetData {
   // Inventory
   hasInventory: boolean;
   inventoryList: FurnitureItem[];
+
+  // Servidumbres: identificación y delimitación técnica de ambas fincas
+  servitudeDetails?: {
+    dominantOwner: string;
+    dominantRegistryRef: string;
+    dominantCadastralRef: string;
+    dominantAddress: string;
+    servientOwner: string;
+    servientRegistryRef: string;
+    servientCadastralRef: string;
+    servientAddress: string;
+    routeDescription: string;
+    widthMeters: number;
+    surfaceM2: number;
+    useAndSchedule: string;
+    infrastructureType: 'civil' | 'energia' | 'telecomunicaciones' | 'canalizacion';
+    technicalProject: string;
+    publicPermits: string;
+  };
 }
 
 export interface ClauseTerms {
@@ -213,6 +241,16 @@ export interface ClauseTerms {
   };
   specialClauses: string;
   jurisdictionCity: string;
+  servitudeTerms?: {
+    duration: string;
+    compensationEUR: number;
+    worksCostAllocation: string;
+    maintenanceAllocation: string;
+    liabilityAndInsurance: string;
+    prohibitions: string;
+    registrationAgreement: boolean;
+    legalNoticeAccepted: boolean;
+  };
 }
 
 export interface DigitalEvidence {

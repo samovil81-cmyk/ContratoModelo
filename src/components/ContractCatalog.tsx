@@ -22,6 +22,7 @@ import {
   ShieldAlert,
   Send,
   MailCheck
+  ,Route, Construction, Eye, Droplets, Waves, Wall, Cable
 } from 'lucide-react';
 import { CONTRACT_CATALOG } from '../utils/legalTemplates';
 import { ContractType, ContractCategory } from '../types/contract';
@@ -55,6 +56,13 @@ export const ContractCatalog: React.FC<ContractCatalogProps> = ({
       case 'ShieldAlert': return <ShieldAlert className="h-6 w-6 text-rose-600" />;
       case 'Send': return <Send className="h-6 w-6 text-red-600" />;
       case 'MailCheck': return <MailCheck className="h-6 w-6 text-orange-600" />;
+      case 'Route': return <Route className="h-6 w-6 text-cyan-700" />;
+      case 'Construction': return <Construction className="h-6 w-6 text-cyan-700" />;
+      case 'Eye': return <Eye className="h-6 w-6 text-cyan-700" />;
+      case 'Droplets': return <Droplets className="h-6 w-6 text-cyan-700" />;
+      case 'Waves': return <Waves className="h-6 w-6 text-cyan-700" />;
+      case 'Wall': return <Wall className="h-6 w-6 text-cyan-700" />;
+      case 'Cable': return <Cable className="h-6 w-6 text-cyan-700" />;
       case 'FileCheck': return <FileCheck className="h-6 w-6 text-emerald-600" />;
       default: return <FileCheck className="h-6 w-6 text-slate-600" />;
     }
@@ -155,6 +163,18 @@ export const ContractCatalog: React.FC<ContractCatalogProps> = ({
               }`}
             >
               Todos ({CONTRACT_CATALOG.length})
+            </button>
+            <button
+              onClick={() => setFilterCategory('servidumbres_civiles')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${filterCategory === 'servidumbres_civiles' ? 'bg-cyan-700 text-white' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+            >
+              Servidumbres civiles (7)
+            </button>
+            <button
+              onClick={() => setFilterCategory('servidumbres_sectoriales')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${filterCategory === 'servidumbres_sectoriales' ? 'bg-cyan-700 text-white' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+            >
+              Sectoriales (1)
             </button>
             <button
               onClick={() => setFilterCategory('inmobiliaria')}
